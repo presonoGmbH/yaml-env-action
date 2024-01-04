@@ -107,7 +107,6 @@ const run = async () => {
 
             core.debug(`Loading file ${fileName}`);
             let fileEnvironment = yaml.parse(fs.readFileSync(fileName, 'utf8'));
-            core.debug(`File content: ${JSON.stringify(fileEnvironment)}`);
 
             environments.push(fileEnvironment);
         }
