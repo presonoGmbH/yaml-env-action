@@ -113,7 +113,7 @@ const run = async () => {
 
         Object.keys(resultingEnvironment).forEach(key => {
             core.exportVariable(key, resultingEnvironment[key]);
-            core.info(`export ${key}=${resultingEnvironment[key]}`);
+            core.info(`export ${key}=***`);
         });
     } catch (error) {
         core.setFailed(error);
