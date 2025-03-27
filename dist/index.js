@@ -9,7 +9,7 @@ const github = __nccwpck_require__(3228);
 const fs = __nccwpck_require__(9896);
 const yaml = __nccwpck_require__(8815);
 const caseLib = __nccwpck_require__(6889);
-const flatten = __nccwpck_require__(5924);
+const { flatten } = __nccwpck_require__(5924);
 const deepmerge = __nccwpck_require__(2569);
 const { env } = __nccwpck_require__(932);
 

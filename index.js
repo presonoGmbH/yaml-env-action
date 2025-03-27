@@ -3,7 +3,7 @@ const github = require('@actions/github');
 const fs = require('fs');
 const yaml = require('yaml');
 const caseLib = require('case');
-const flatten = require('flat');
+const { flatten } = require('flat');
 const deepmerge = require('deepmerge');
 const { env } = require('process');
 
