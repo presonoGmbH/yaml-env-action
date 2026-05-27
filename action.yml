@@ -5,5 +5,5 @@ inputs:
     description: Path to the configuration files to use for the GitHub Workflow environment.
     required: true
 runs:
-  using: 'node26'
+  using: 'node24'
   main: 'dist/index.js'
