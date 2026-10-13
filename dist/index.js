@@ -84,6 +84,24 @@ const getEnvironment = async objs => {
 };
 
 /**
+ * Register a value as a secret, so the runner masks it in all later log output, including the environment that is
+ * shown for every later step. A masked value is only found as an exact match within a log line, so every line of a
+ * multi-line value is registered on its own. The value is converted to text like core.exportVariable does it.
+ *
+ * @param {*} value The value of an environment variable.
+ */
+const maskValue = value => {
+    if (value === null || value === undefined) {
+        return;
+    }
+
+    const text = typeof value === 'string' ? value : JSON.stringify(value);
+    text.split(/\r?\n/)
+        .filter(line => line.trim() !== '')
+        .forEach(line => core.setSecret(line));
+};
+
+/**
  * Run the action process by reading the files, merging them into a single environment, and then setting the environment variables.
  */
 const run = async () => {
@@ -117,6 +135,7 @@ const run = async () => {
         const resultingEnvironment = await getEnvironment(environments);
 
         Object.keys(resultingEnvironment).forEach(key => {
+            maskValue(resultingEnvironment[key]);
             core.exportVariable(key, resultingEnvironment[key]);
             core.info(`export ${key}=***`);
         });
@@ -129,7 +148,8 @@ run()
 
 module.exports = {
     splitFiles,
-    getEnvironment
+    getEnvironment,
+    maskValue
 }
 
 /***/ }),

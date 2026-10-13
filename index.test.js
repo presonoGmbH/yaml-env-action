@@ -1,3 +1,4 @@
+const core = require('@actions/core');
 const index = require('./index');
 
 describe("Split Files Tests", () => {
@@ -153,5 +154,43 @@ describe('Test Get Environment', () => {
     })
 
 
+
+})
+
+describe('Mask Value Tests', () => {
+
+    let setSecret;
+
+    beforeEach(() => {
+        setSecret = jest.spyOn(core, 'setSecret').mockImplementation(() => {});
+    })
+
+    afterEach(() => {
+        setSecret.mockRestore();
+    })
+
+    test('Single line value should be masked as a whole', () => {
+        index.maskValue('s3cr3t value');
+        expect(setSecret.mock.calls).toEqual([['s3cr3t value']]);
+    })
+
+    test('Every line of a multi-line value should be masked on its own', () => {
+        index.maskValue('-----BEGIN KEY-----\nline1\r\nline2\n\n   \n-----END KEY-----\n');
+        expect(setSecret.mock.calls).toEqual([['-----BEGIN KEY-----'], ['line1'], ['line2'], ['-----END KEY-----']]);
+    })
+
+    test('Numbers and booleans should be masked as they are exported', () => {
+        index.maskValue(1234);
+        index.maskValue(false);
+        expect(setSecret.mock.calls).toEqual([['1234'], ['false']]);
+    })
+
+    test('Empty values should not be masked', () => {
+        index.maskValue('');
+        index.maskValue('  ');
+        index.maskValue(null);
+        index.maskValue(undefined);
+        expect(setSecret).not.toHaveBeenCalled();
+    })
 
 })

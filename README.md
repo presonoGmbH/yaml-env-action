@@ -12,6 +12,9 @@ take multiple YAML files input that override eachother, allowing for multi-envir
 * Set GitHub Workflow environment variables using a list of YAML configuration files.
 * Pass multiple files to get environment overrides.
 * Complex YAML structures are supported.
+* Every value is registered as a secret (`core.setSecret`, each line of a multi-line value on its own) before it is
+  exported, so GitHub masks it as `***` in all later log output, including the environment shown for later steps.
+  Short or common values (e.g. `true`) are masked wherever they appear in those logs.
 
 ## Usage
 
